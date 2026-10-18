@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: bitchord-monochrome-addon
+    env: docker
+    plan: free
+    region: oregon
+    healthCheckPath: /manifest.json
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: HOST
+        value: 0.0.0.0

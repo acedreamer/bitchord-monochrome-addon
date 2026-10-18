@@ -1,0 +1,10 @@
+node_modules
+dist
+.git
+.env
+temp_bitchord
+temp_octo
+tests
+*.log
+.DS_Store
+Thumbs.db

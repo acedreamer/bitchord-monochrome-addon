@@ -1,0 +1,38 @@
+name: Bug Report
+description: File a bug report for the Monochrome BitChord Provider Add-on
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue! Please ensure you are running BitChord v1.5.2 or newer.
+  - type: input
+    id: bitchord-version
+    attributes:
+      label: BitChord Client Version
+      description: What version of BitChord are you using? (e.g., v1.5.2, Android / Desktop)
+      placeholder: "e.g. BitChord v1.5.2 (Android)"
+    validations:
+      required: true
+  - type: input
+    id: failing-track
+    attributes:
+      label: Failing Track / Artist / ISRC
+      description: Which track or query failed to resolve or play?
+      placeholder: "e.g. Coldplay - Yellow / GBAYE0000038"
+    validations:
+      required: false
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the Bug
+      description: A clear and concise description of what happened.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Server Logs
+      description: Paste any server output or error traces here.
+      render: shell
