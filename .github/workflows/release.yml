@@ -31,7 +31,7 @@ jobs:
         run: tar -czf bitchord-monochrome-addon-${{ github.ref_name }}.tar.gz dist/ package.json package-lock.json LICENSE README.md
 
       - name: Publish GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: bitchord-monochrome-addon-${{ github.ref_name }}.tar.gz
           generate_release_notes: true
