@@ -1,9 +1,9 @@
 # Monochrome Lossless Provider Add-on for BitChord
 
-[![CI](https://github.com/bitchord/bitchord-monochrome-addon/actions/workflows/ci.yml/badge.svg)](https://github.com/bitchord/bitchord-monochrome-addon/actions/workflows/ci.yml)
-[![Docker](https://github.com/bitchord/bitchord-monochrome-addon/actions/workflows/docker.yml/badge.svg)](https://github.com/bitchord/bitchord-monochrome-addon/actions/workflows/docker.yml)
+[![CI](https://github.com/acedreamer/bitchord-monochrome-addon/actions/workflows/ci.yml/badge.svg)](https://github.com/acedreamer/bitchord-monochrome-addon/actions/workflows/ci.yml)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](Dockerfile)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20.0.0-green.svg)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20.0.0-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 
 A high-performance, stateless HTTP source provider add-on for [BitChord](https://github.com/bitchord) (v1.5.2+), translating BitChord client requests to the community Monochrome / HiFi API network to deliver bit-perfect lossless 16-bit/44.1kHz FLAC and Hi-Res audio streams.
 
@@ -13,8 +13,8 @@ A high-performance, stateless HTTP source provider add-on for [BitChord](https:/
 
 Deploy your own private instance in seconds with zero configuration:
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/acedreamer/bitchord-monochrome-addon)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template?template=https%3A%2F%2Fgithub.com%2Facedreamer%2Fbitchord-monochrome-addon)
 
 ---
 
@@ -31,12 +31,61 @@ Deploy your own private instance in seconds with zero configuration:
 
 ## 📱 BitChord Client Setup Guide
 
-1. Deploy this add-on locally or to a cloud host (Render, Railway, VPS).
-2. Open the **BitChord** app on Android or Desktop.
-3. Navigate to **Settings** > **Source Modules** / **Add-ons**.
-4. Tap **Add Custom Provider** (`+`).
-5. Enter the base URL of your deployed add-on (e.g. `http://192.168.1.100:8080` or `https://your-app.onrender.com`).
-6. BitChord will query `GET /manifest.json`, register **Monochrome Lossless Provider**, and display it as an active lossless source!
+Follow the instructions below depending on whether you are running the add-on locally on your computer or deployed to the cloud:
+
+### Scenario A: Running Locally on your PC (Testing on Phone via Wi-Fi)
+
+1. Start the add-on server on your PC:
+   ```bash
+   npm run dev
+   # or for production: npm run build && npm start
+   ```
+2. Find your computer's local IP address on your Wi-Fi network:
+   - **Windows**: Run `ipconfig` in Command Prompt / PowerShell and look for **IPv4 Address** under your Wi-Fi adapter (e.g. `192.168.1.100` or `192.168.20.6`).
+   - **macOS / Linux**: Run `ip a` or `ifconfig`.
+3. Ensure your phone is connected to the **same Wi-Fi network**.
+4. Test connectivity from your phone: Open Chrome / Safari on your phone and browse to:
+   ```text
+   http://<YOUR_PC_IP>:8080/manifest.json
+   ```
+   *(e.g., `http://192.168.20.6:8080/manifest.json`)*
+5. Open **BitChord** on your phone:
+   - Navigate to **Settings** > **Source Modules** / **Add-ons**.
+   - Tap **Add Custom Provider** (`+`).
+   - Enter your PC's URL:
+     ```text
+     http://<YOUR_PC_IP>:8080
+     ```
+   - Tap **Save** / **Add**. BitChord will handshake via `GET /manifest.json` and register **Monochrome Lossless Provider**!
+
+> [!IMPORTANT]
+> **Mobile Configuration Tips:**
+> - **Always include the `http://` prefix!** If you enter `192.168.x.x:8080` without `http://`, Android treats the string as a domain name and fails with `No address associated with hostname`.
+> - **Never use `localhost` on a phone.** `localhost` on a phone refers to the phone itself, not your computer.
+> - **Windows Firewall:** If your phone cannot connect, Windows Firewall may be blocking inbound traffic on port 8080. Run this command in an Administrator PowerShell to allow it:
+>   ```powershell
+>   New-NetFirewallRule -DisplayName "BitChord Addon" -Direction Inbound -LocalPort 8080 -Protocol TCP -Action Allow
+>   ```
+
+---
+
+### Scenario B: Running on the Same Device (BitChord Desktop or Emulator)
+
+| Platform | Provider URL to Enter |
+|---|---|
+| **BitChord Desktop** (Windows / macOS / Linux) | `http://localhost:8080` |
+| **Android Emulator** (Android Studio) | `http://10.0.2.2:8080` |
+
+---
+
+### Scenario C: Deployed to Cloud (Render / Railway / VPS)
+
+1. Deploy using the [1-Click Cloud Deploy](#-1-click-cloud-deploy) buttons above.
+2. In **BitChord**, enter your cloud service HTTPS URL:
+   ```text
+   https://<your-service-name>.onrender.com
+   ```
+3. No local network or firewall setup is needed.
 
 ---
 
@@ -125,7 +174,7 @@ Resolves a direct stream URL for playback.
 
 ```bash
 # Clone the repository
-git clone https://github.com/bitchord/bitchord-monochrome-addon.git
+git clone https://github.com/acedreamer/bitchord-monochrome-addon.git
 cd bitchord-monochrome-addon
 
 # Install dependencies

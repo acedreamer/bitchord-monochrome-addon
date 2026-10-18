@@ -15,6 +15,14 @@
     "test:live": "tsx tests/liveIntegration.test.ts",
     "typecheck": "tsc --noEmit"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acedreamer/bitchord-monochrome-addon.git"
+  },
+  "bugs": {
+    "url": "https://github.com/acedreamer/bitchord-monochrome-addon/issues"
+  },
+  "homepage": "https://github.com/acedreamer/bitchord-monochrome-addon#readme",
   "keywords": [
     "bitchord",
     "monochrome",
