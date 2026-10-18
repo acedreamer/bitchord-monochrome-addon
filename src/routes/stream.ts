@@ -2,6 +2,7 @@ import { FastifyInstance, FastifyPluginOptions } from 'fastify';
 import { InstancePool } from '../pool/instancePool.js';
 import { fetchFromPool, ResponseValidator } from '../pool/fetchFromPool.js';
 import { decodeStreamManifest } from '../transforms/manifestDecoder.js';
+import { UPSTREAM_HEADERS, UPSTREAM_TIMEOUT_MS } from '../config.js';
 
 export interface StreamRouteOptions extends FastifyPluginOptions {
   pool: InstancePool;
@@ -55,8 +56,40 @@ export async function streamRoutes(
         return { error: 'Track ID parameter is required' };
       }
 
+      const cleanId = id.trim();
+
+      // 1. Check if ID is a modern tracks.monochrome.st track (15+ digit ID)
+      if (cleanId.length >= 15 && /^\d+$/.test(cleanId)) {
+        try {
+          const probe = await fetch(`https://tracks.monochrome.st/track/${cleanId}`, {
+            method: 'HEAD',
+            headers: { 'User-Agent': UPSTREAM_HEADERS['User-Agent'] },
+            signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS)
+          });
+
+          if (probe.ok) {
+            return {
+              url: `https://tracks.monochrome.st/track/${cleanId}`,
+              format: 'flac',
+              quality: requestedQuality,
+              mimeType: 'audio/flac',
+              manifest: 'none',
+              encrypted: false,
+              sampleRate: 44100,
+              bitDepth: 16,
+              headers: {
+                'User-Agent': UPSTREAM_HEADERS['User-Agent']
+              }
+            };
+          }
+        } catch (err: any) {
+          request.log.warn({ err }, 'tracks.monochrome.st stream probe failed; falling back to pool');
+        }
+      }
+
+      // 2. Fallback to HiFi API pool resolution (BTS / DASH step-down)
       try {
-        const streamPath = `/track/?id=${encodeURIComponent(id.trim())}&quality=${encodeURIComponent(requestedQuality)}`;
+        const streamPath = `/track/?id=${encodeURIComponent(cleanId)}&quality=${encodeURIComponent(requestedQuality)}`;
         const { data } = await fetchFromPool(pool, streamPath, {}, streamValidator);
         const trackData = data?.data || data;
 
@@ -69,10 +102,10 @@ export async function streamRoutes(
         // REQ-STR-06: DASH-to-FLAC Step-Down Handler
         if (decoded.isDash) {
           request.log.info(
-            `[Stream] Track ${id}: Hi-Res DASH XML returned; stepping down to LOSSLESS FLAC for BitChord compatibility.`
+            `[Stream] Track ${cleanId}: Hi-Res DASH XML returned; stepping down to LOSSLESS FLAC for BitChord compatibility.`
           );
 
-          const fallbackPath = `/track/?id=${encodeURIComponent(id.trim())}&quality=LOSSLESS`;
+          const fallbackPath = `/track/?id=${encodeURIComponent(cleanId)}&quality=LOSSLESS`;
           const fallback = await fetchFromPool(pool, fallbackPath, {}, streamValidator);
           const fallbackData = fallback.data?.data || fallback.data;
 
@@ -95,7 +128,7 @@ export async function streamRoutes(
 
         return decoded.stream;
       } catch (err: any) {
-        request.log.error(err, `Stream extraction failed for track ${id}`);
+        request.log.error(err, `Stream extraction failed for track ${cleanId}`);
         reply.status(502);
         return {
           error: 'Stream extraction failed',
