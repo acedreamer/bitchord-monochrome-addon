@@ -34,7 +34,7 @@
   "author": "BitChord Community",
   "license": "MIT",
   "dependencies": {
-    "@fastify/cors": "^9.0.0",
+    "@fastify/cors": "^11.3.1",
     "fastify": "^4.26.0"
   },
   "devDependencies": {
