@@ -10,7 +10,7 @@ export const DEFAULT_INSTANCES = [
   'https://tidal.kinoplus.online'
 ];
 
-export const UPSTREAM_TIMEOUT_MS = 5000;
+export const UPSTREAM_TIMEOUT_MS = 3000;
 export const BLACKLIST_PREVIEW_COOLDOWN_MS = 300000; // 5 minutes (300,000ms)
 export const BLACKLIST_ERROR_COOLDOWN_MS = 180000;   // 3 minutes (180,000ms)
 

@@ -242,7 +242,7 @@ describe('HTTP Route Integration Tests (Phase 6.3)', () => {
       assert.strictEqual(body.sampleRate, 44100);
     });
 
-    it('returns HTTP 502 when stream resolution fails (REQ-STR-08)', async () => {
+    it('returns HTTP 404 when stream resolution fails (REQ-STR-08)', async () => {
       globalThis.fetch = async () => {
         return new Response('Not found', { status: 404 });
       };
@@ -252,9 +252,9 @@ describe('HTTP Route Integration Tests (Phase 6.3)', () => {
         url: '/stream/999'
       });
 
-      assert.strictEqual(res.statusCode, 502);
+      assert.strictEqual(res.statusCode, 404);
       const body = JSON.parse(res.payload);
-      assert.strictEqual(body.error, 'Stream extraction failed');
+      assert.strictEqual(body.error, 'Stream not found');
     });
   });
 });

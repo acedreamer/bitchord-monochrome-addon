@@ -60,31 +60,19 @@ export async function streamRoutes(
 
       // 1. Check if ID is a modern tracks.monochrome.st track (15+ digit ID)
       if (cleanId.length >= 15 && /^\d+$/.test(cleanId)) {
-        try {
-          const probe = await fetch(`https://tracks.monochrome.st/track/${cleanId}`, {
-            method: 'HEAD',
-            headers: { 'User-Agent': UPSTREAM_HEADERS['User-Agent'] },
-            signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS)
-          });
-
-          if (probe.ok) {
-            return {
-              url: `https://tracks.monochrome.st/track/${cleanId}`,
-              format: 'flac',
-              quality: requestedQuality,
-              mimeType: 'audio/flac',
-              manifest: 'none',
-              encrypted: false,
-              sampleRate: 44100,
-              bitDepth: 16,
-              headers: {
-                'User-Agent': UPSTREAM_HEADERS['User-Agent']
-              }
-            };
+        return {
+          url: `https://tracks.monochrome.st/track/${cleanId}`,
+          format: 'flac',
+          quality: requestedQuality,
+          mimeType: 'audio/flac',
+          manifest: 'none',
+          encrypted: false,
+          sampleRate: 44100,
+          bitDepth: 16,
+          headers: {
+            'User-Agent': UPSTREAM_HEADERS['User-Agent']
           }
-        } catch (err: any) {
-          request.log.warn({ err }, 'tracks.monochrome.st stream probe failed; falling back to pool');
-        }
+        };
       }
 
       // 2. Fallback to HiFi API pool resolution (BTS / DASH step-down)
@@ -128,10 +116,10 @@ export async function streamRoutes(
 
         return decoded.stream;
       } catch (err: any) {
-        request.log.error(err, `Stream extraction failed for track ${cleanId}`);
-        reply.status(502);
+        request.log.warn(err, `Stream not found for track ${cleanId}`);
+        reply.status(404);
         return {
-          error: 'Stream extraction failed',
+          error: 'Stream not found',
           details: err.message || 'Unknown upstream stream error'
         };
       }

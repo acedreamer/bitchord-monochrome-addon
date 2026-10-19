@@ -44,10 +44,8 @@ export async function searchRoutes(
       if (res.ok) {
         const data: any = await res.json();
         const rawTracks = Array.isArray(data?.tracks) ? data.tracks : [];
-        if (rawTracks.length > 0) {
-          const tracks = rawTracks.map((item: any) => mapHiFiTrackToAddon(item));
-          return { tracks };
-        }
+        const tracks = rawTracks.map((item: any) => mapHiFiTrackToAddon(item));
+        return { tracks };
       }
     } catch (err: any) {
       request.log.warn({ err }, 'Modern tracks.monochrome.st search failed; falling back to pool');
