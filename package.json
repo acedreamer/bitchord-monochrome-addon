@@ -12,7 +12,7 @@
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts",
     "test": "tsx --test tests/*.test.ts",
-    "test:live": "tsx tests/liveIntegration.test.ts",
+    "test:live": "tsx tests/liveIntegration.ts",
     "typecheck": "tsc --noEmit"
   },
   "repository": {
