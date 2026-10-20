@@ -60,6 +60,7 @@ export async function streamRoutes(
 
       // 1. Check if ID is a modern tracks.monochrome.st track (15+ digit ID)
       if (cleanId.length >= 15 && /^\d+$/.test(cleanId)) {
+        reply.header('Cache-Control', 'public, max-age=3600');
         return {
           url: `https://tracks.monochrome.st/track/${cleanId}`,
           format: 'flac',

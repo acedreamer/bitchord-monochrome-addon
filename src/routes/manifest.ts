@@ -6,6 +6,7 @@ export async function manifestRoutes(
 ): Promise<void> {
   fastify.get('/manifest.json', async (_request, reply) => {
     reply.header('Content-Type', 'application/json; charset=utf-8');
+    reply.header('Cache-Control', 'public, max-age=86400');
     return {
       id: 'com.bitchord.addon.monochrome',
       name: 'Monochrome Lossless Provider',

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { FastifyInstance } from 'fastify';
 import { buildApp } from '../src/index.js';
 import { InstancePool } from '../src/pool/instancePool.js';
+import { searchCache } from '../src/routes/search.js';
 
 describe('HTTP Route Integration Tests (Phase 6.3)', () => {
   let app: FastifyInstance;
@@ -23,6 +24,7 @@ describe('HTTP Route Integration Tests (Phase 6.3)', () => {
   afterEach(() => {
     globalThis.fetch = originalFetch;
     pool.clearBlacklist();
+    searchCache.clear();
   });
 
   describe('GET /manifest.json (REQ-MAN-01, REQ-MAN-02, REQ-MAN-03, REQ-MAN-04, REQ-OPS-02)', () => {

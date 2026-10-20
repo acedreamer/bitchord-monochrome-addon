@@ -1,11 +1,19 @@
 services:
   - type: web
     name: bitchord-monochrome-addon
-    env: docker
+    runtime: docker
     plan: free
-    region: oregon
+    region: singapore
+    branch: main
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    autoDeploy: true
     healthCheckPath: /manifest.json
     envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=400
       - key: PORT
         value: 8080
       - key: HOST
