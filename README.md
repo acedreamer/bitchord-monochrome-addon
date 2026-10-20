@@ -7,6 +7,28 @@
 
 A high-performance, stateless HTTP source provider add-on for [BitChord](https://github.com/bitchord) (v1.5.2+), translating BitChord client requests to the community Monochrome / HiFi API network to deliver bit-perfect lossless 16-bit/44.1kHz FLAC and Hi-Res audio streams.
 
+<p align="center">
+  <img src="images/bitchord-playback-1.jpeg" width="31%" alt="BitChord Lossless FLAC Playback - Fainted" />
+  <img src="images/bitchord-playback-2.jpeg" width="31%" alt="BitChord Lossless FLAC Playback - Sea of Problems" />
+  <img src="images/bitchord-playback-3.jpeg" width="31%" alt="BitChord Lossless FLAC Playback - The Kill 2" />
+</p>
+
+---
+
+## 🌐 Public Live Instance
+
+A live instance is hosted and ready for community use:
+
+| Provider URL | Hosted Region | Latency Advantage |
+|---|---|---|
+| `https://bitchord-monochrome-addon.onrender.com` | **Singapore (`singapore`)** | ⚡ **Significantly lower latency (~40–60ms)** for users in India, Southeast Asia, and neighboring APAC regions compared to distant US/EU servers |
+
+> [!TIP]
+> **Quick Setup in BitChord:**
+> 1. Open **BitChord** on your device > **Settings** > **Source Modules** / **Add-ons**.
+> 2. Tap **Add Custom Provider** (`+`).
+> 3. Paste `https://bitchord-monochrome-addon.onrender.com` and tap **Save**.
+
 ---
 
 ## 🚀 1-Click Cloud Deploy
