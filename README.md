@@ -19,15 +19,19 @@ A high-performance, stateless HTTP source provider add-on for [BitChord](https:/
 
 A live instance is hosted and ready for community use:
 
-| Provider URL | Hosted Region | Latency Advantage |
-|---|---|---|
-| `https://bitchord-monochrome-addon.onrender.com` | **Singapore (`singapore`)** | ⚡ **Significantly lower latency (~40–60ms)** for users in India, Southeast Asia, and neighboring APAC regions compared to distant US/EU servers |
+```text
+https://bitchord-monochrome-addon.onrender.com
+```
+
+| Hosted Region | Latency Advantage |
+|---|---|
+| **Singapore (`singapore`)** | ⚡ **Significantly lower latency (~40–60ms)** for users in India, Southeast Asia, and neighboring APAC regions compared to distant US/EU servers |
 
 > [!TIP]
 > **Quick Setup in BitChord:**
-> 1. Open **BitChord** on your device > **Settings** > **Source Modules** / **Add-ons**.
-> 2. Tap **Add Custom Provider** (`+`).
-> 3. Paste `https://bitchord-monochrome-addon.onrender.com` and tap **Save**.
+> 1. Click the **copy button** on the URL box above.
+> 2. Open **BitChord** on your device > **Settings** > **Source Modules** / **Add-ons**.
+> 3. Tap **Add Custom Provider** (`+`), paste the URL, and tap **Save**.
 
 ---
 
@@ -100,12 +104,12 @@ Follow the instructions below depending on whether you are running the add-on lo
 
 ---
 
-### Scenario C: Deployed to Cloud (Render / Railway / VPS)
+### Scenario C: Cloud Deployment (Public or Private)
 
-1. Deploy using the [1-Click Cloud Deploy](#-1-click-cloud-deploy) buttons above.
-2. In **BitChord**, enter your cloud service HTTPS URL:
+1. Use the ready-to-use [Public Community Instance](#-public-live-instance) or deploy your own using the [1-Click Cloud Deploy](#-1-click-cloud-deploy) buttons.
+2. In **BitChord**, enter the HTTPS provider URL:
    ```text
-   https://<your-service-name>.onrender.com
+   https://bitchord-monochrome-addon.onrender.com
    ```
 3. No local network or firewall setup is needed.
 
