@@ -131,7 +131,7 @@ describe('HTTP Route Integration Tests (Phase 6.3)', () => {
       );
     });
 
-    it('returns HTTP 502 when all upstream instances fail (REQ-SCH-08)', async () => {
+    it('gracefully returns empty tracks when all upstream instances fail (REQ-SCH-08)', async () => {
       globalThis.fetch = async () => {
         return new Response('Gateway timeout', { status: 504 });
       };
@@ -141,9 +141,9 @@ describe('HTTP Route Integration Tests (Phase 6.3)', () => {
         url: '/search?q=Yellow'
       });
 
-      assert.strictEqual(res.statusCode, 502);
+      assert.strictEqual(res.statusCode, 200);
       const body = JSON.parse(res.payload);
-      assert.strictEqual(body.error, 'Upstream search failed');
+      assert.deepStrictEqual(body.tracks, []);
     });
   });
 

@@ -75,28 +75,28 @@ export async function searchRoutes(
 
     // 2. Fallback to HiFi API instance pool
     try {
-      const searchPath = `/search/?s=${encodeURIComponent(trimmedQuery)}`;
-      const { data } = await fetchFromPool(pool, searchPath);
+      const candidates = pool.getActiveInstances();
+      if (candidates.length > 0) {
+        const searchPath = `/search/?s=${encodeURIComponent(trimmedQuery)}`;
+        const { data } = await fetchFromPool(pool, searchPath);
 
-      // Support upstream data formats (data.items or data.data.items)
-      const rawItems = Array.isArray(data?.data?.items)
-        ? data.data.items
-        : Array.isArray(data?.items)
-        ? data.items
-        : [];
+        // Support upstream data formats (data.items or data.data.items)
+        const rawItems = Array.isArray(data?.data?.items)
+          ? data.data.items
+          : Array.isArray(data?.items)
+          ? data.items
+          : [];
 
-      const slicedItems = rawItems.slice(0, 15);
-      const tracks = slicedItems.map((item: any) => mapHiFiTrackToAddon(item));
-      searchCache.set(cacheKey, { tracks });
+        const slicedItems = rawItems.slice(0, 15);
+        const tracks = slicedItems.map((item: any) => mapHiFiTrackToAddon(item));
+        searchCache.set(cacheKey, { tracks });
 
-      return { tracks };
+        return { tracks };
+      }
     } catch (err: any) {
-      request.log.error(err, 'Search upstream failure');
-      reply.status(502);
-      return {
-        error: 'Upstream search failed',
-        details: err.message || 'Unknown upstream error'
-      };
+      request.log.warn({ err }, 'Search upstream fallback failed; returning empty tracks to prevent player lock');
     }
+
+    return { tracks: [] };
   });
 }
